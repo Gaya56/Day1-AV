@@ -1,0 +1,57 @@
++---------------------+
+| Databricks SQL      |
+| Endpoint            |
++----------+----------+
+           |
+           v
++----------+----------+
+| Azure Event Hubs    |
+| Connection          |
++----------+----------+
+           |
+           v
++----------+----------+
+| Delta Lake Storage  |
+| Paths               |
++----------+----------+
+           |
+           v
++----------+----------+
+| Power BI Connection |
++----------+----------+
+           |
+           v
++----------+----------+
+| GitHub Secrets and  |
+| Environment Variables|
++---------------------+
+
+
++---------------------+
+| Databricks SQL      |
+| Endpoint            |
++----------+----------+
+           | DATABRICKS_SQL_ENDPOINT
+           v
++----------+----------+
+| Azure Event Hubs    |
+| Connection          |
++----------+----------+
+           | EVENT_HUBS_CONNECTION_STRING
+           v
++----------+----------+
+| Delta Lake Storage  |
+| Paths               |
++----------+----------+
+           | DELTA_LAKE_STORAGE_PATH
+           v
++----------+----------+
+| Power BI Connection |
++----------+----------+
+           | POWER_BI_CONNECTION_STRING
+           v
++----------+----------+
+| GitHub Secrets and  |
+| Environment Variables|
++---------------------+
+           | GITHUB_SECRETS_ENV_VARS
