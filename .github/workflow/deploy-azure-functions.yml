@@ -1,0 +1,47 @@
+#Prerequisites for This Workflow:
+
+    #Azure Publish Profile: Retrieve this from the Azure portal:
+        #Navigate to your Function App in the Azure portal.
+        #Go to Deployment Center > FTP / Deployment credentials.
+        #Select Get publish profile and download it as an XML file.
+        #In GitHub, add this file’s contents as a secret called AZURE_PUBLISH_PROFILE.
+
+    #Additional Secrets: Add AZURE_FUNCTION_APP_NAME in GitHub Secrets, which should match your Azure Function App name.
+#
+
+name: CD - Deploy Azure Functions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python (if needed for the Azure Functions codebase)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # Install dependencies (if needed for a build step)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Deploy to Azure Functions
+      - name: 'Deploy to Azure Functions'
+        uses: azure/functions-action@v1
+        with:
+          app-name: ${{ secrets.AZURE_FUNCTION_APP_NAME }}
+          package: '.'
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+

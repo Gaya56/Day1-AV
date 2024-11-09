@@ -1,0 +1,49 @@
+#What This Does:
+
+    #Checkout code: Retrieves the repository code for analysis.
+    #Set up Python: Configures the Python environment.
+    #Install dependencies: Installs required libraries and tools (flake8 for linting, pytest for testing).
+    #Run Linting: Checks code style and potential errors.
+    #Run Tests: Executes unit tests to validate the functionality.
+
+
+
+name: CI - Lint and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Specify the Python version as needed
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 pytest  # Ensure linting and testing tools are available
+
+      # Run Linting
+      - name: Run Linter (flake8)
+        run: flake8 src/  # Specify the code directory
+
+      # Run Tests
+      - name: Run Unit Tests
+        run: pytest tests/

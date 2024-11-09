@@ -1,0 +1,37 @@
+name: Deploy Databricks Notebooks and SQL Queries
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Databricks CLI
+      - name: Install Databricks CLI
+        run: pip install databricks-cli
+
+      # Configure Databricks CLI with GitHub Secrets
+      - name: Configure Databricks CLI
+        run: |
+          databricks configure --token --host ${{ secrets.DATABRICKS_HOST }}
+        env:
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+
+      # Deploy Notebooks
+      - name: Deploy Notebooks to Databricks
+        run: |
+          databricks workspace import_dir src/databricks_notebooks /Workspace/StreamingNotebooks --overwrite
+
+      # Deploy SQL Queries to Databricks
+      - name: Deploy SQL Queries to Databricks
+        run: |
+          databricks sql statement execute --file=src/databricks_sql/live_data_query.sql
